@@ -1,0 +1,17 @@
+version: '3.1'
+
+volumes:
+  gitlab-data:
+  gitlab-logs:
+
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    restart: always
+    ports:
+      - "8008:80"
+    volumes:
+      - ./gitlab.rb:/etc/gitlab/gitlab.rb:ro
+      - gitlab-logs:/var/log/gitlab
+      - gitlab-data:/var/opt/gitlab
+      - ${HOME}:/home

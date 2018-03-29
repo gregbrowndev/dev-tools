@@ -1,0 +1,33 @@
+version: '3.1'
+
+volumes:
+  jenkins-data:
+  registry-data:
+
+services:
+  jenkins:
+    image: jenkinsci/blueocean
+    restart: always
+    user: root
+    ports:
+      - "9000:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${HOME}:/home
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+  registry:
+    image: registry:2
+    restart: always
+    ports:
+      - "5000:5000"
+    volumes:
+      - registry-data:/var/lib/registry 
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
